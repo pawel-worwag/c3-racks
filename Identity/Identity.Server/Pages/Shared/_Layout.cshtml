@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <link href="/libs/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH">
+    <link rel="stylesheet" href="/libs/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body data-bs-theme="dark">
+<div class="d-flex align-items-center justify-content-between mb-3 p-1 border-bottom  bg-body-tertiary">
+    <nav class="d-flex align-items-center">
+        <a href="#" class="btn btn-sm bi"><span class="bi-box-arrow-in-right"></span> Zaloguj</a>
+    </nav>
+    <div class="me-2 fw-bolder">C3-Racks Identity.Server</div>
+    <div>
+        <div class="dropdown">
+            <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="bi bi-circle-half"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item bi" href="#"><span class="bi-circle-fill"></span> Dark</a></li>
+                <li><a class="dropdown-item bi" href="#"><span class="bi-circle"></span> Light</a></li>
+                <li><a class="dropdown-item bi" href="#"><span class="bi-play-circle"></span> Auto</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+@RenderBody()
+</div>
+<script src="/libs/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"></script>
+</body>
+</html>

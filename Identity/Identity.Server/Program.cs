@@ -79,7 +79,7 @@ builder.Services.AddOpenIddict()
 var app = builder.Build();
 
 app.UseRouting();
-
+app.MapStaticAssets();
 app.UseAuthentication();
 app.UseAuthorization();
 
