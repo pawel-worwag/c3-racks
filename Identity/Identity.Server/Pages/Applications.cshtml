@@ -1,0 +1,27 @@
+@page "/identity/applications"
+@model Identity.Server.Pages.Applications
+
+@{
+    
+    ViewBag.Title = "Identity.Server Applications";
+    Layout = "_Layout";
+}
+
+<h1 class="h1 display-5">Aplikacje</h1>
+
+<table class="w-100 table table-hover">
+    <thead>
+    <tr><th>Id klienta</th><th>Typ aplikacji</th><th>Nazwa wyświetlana</th><th>Uprawnienia</th></tr>
+    </thead>
+    <tbody>
+@foreach (var app in Model.applications)
+{
+    <tr>
+        <td>@app.ClientId</td>
+        <td>@app.ApplicationType</td>
+        <td>@app.DisplayName</td>
+        <td>@app.Permissions</td>
+    </tr>
+}
+    </tbody>
+</table>

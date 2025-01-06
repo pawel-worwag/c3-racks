@@ -1,5 +1,4 @@
 using System.Reflection;
-using Identity.Server.Application;
 using Identity.Server.Domain;
 using Identity.Server.Infrastructure.Database;
 using MediatR;
@@ -16,6 +15,7 @@ builder.Services.AddRazorPages(options =>
 });
 builder.Services.AddOpenApi();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+Console.WriteLine($"SC: Filename={Path.Combine(Path.GetTempPath(), "openiddict-balosar-server.sqlite3")}");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite($"Filename={Path.Combine(Path.GetTempPath(), "openiddict-balosar-server.sqlite3")}");
@@ -92,11 +92,5 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/openapi/v1.json", "v1");
 });
 
-app.MapGet("/callback/login/{provider}", ()=> { throw new NotImplementedException(); });
-app.MapPost("/callback/login/{provider}", ()=> { throw new NotImplementedException(); });
-app.MapGet("/connect/authorize", async (IMediator m,HttpContext ctx) => await m.Send(new AuthorizeRequest(){}));
-app.MapPost("/connect/authorize", ()=> { throw new NotImplementedException(); });
-app.MapGet("/connect/logout", ()=> { throw new NotImplementedException(); });
-app.MapPost("/connect/token", ()=> { throw new NotImplementedException(); });
 app.MapRazorPages();
 app.Run();
