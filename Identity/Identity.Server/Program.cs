@@ -88,6 +88,12 @@ app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/openapi/v1.json", "v1");
 });
-//app.MapGet("/", () => "Hello World!");
+
+app.MapGet("/callback/login/{provider}", ()=> { throw new NotImplementedException(); });
+app.MapPost("/callback/login/{provider}", ()=> { throw new NotImplementedException(); });
+app.MapGet("/connect/authorize", ()=> { throw new NotImplementedException(); });
+app.MapPost("/connect/authorize", ()=> { throw new NotImplementedException(); });
+app.MapGet("/connect/logout", ()=> { throw new NotImplementedException(); });
+app.MapPost("/connect/token", ()=> { throw new NotImplementedException(); });
 app.MapRazorPages();
 app.Run();
