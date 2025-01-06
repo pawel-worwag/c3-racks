@@ -1,4 +1,5 @@
 using System.Reflection;
+using Identity.Server.Application.Applications.AddApplication;
 using Identity.Server.Application.Applications.GetAll;
 using Identity.Server.Application.Applications.GetDetails;
 using Identity.Server.Domain;
@@ -21,9 +22,9 @@ Console.WriteLine($"SC: Filename={Path.Combine(Path.GetTempPath(), "openiddict-b
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlite($"Filename={Path.Combine(Path.GetTempPath(), "openiddict-balosar-server.sqlite3")}");
-    options.UseOpenIddict();
+    options.UseOpenIddict<Application, Authorization, Scope, Token, Guid>();
 });
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<Identity.Server.Domain.User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
@@ -36,27 +37,30 @@ builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete
 builder.Services.AddOpenIddict()
     .AddCore(options =>
     {
-        options.UseEntityFrameworkCore().UseDbContext<ApplicationDbContext>();
+        options.UseEntityFrameworkCore()
+            .UseDbContext<ApplicationDbContext>()
+            .ReplaceDefaultEntities<Application, Authorization, Scope, Token, Guid>();
+
         options.UseQuartz();
     })
     .AddClient(options =>
+    {
+        options.AllowAuthorizationCodeFlow();
+        options.AddDevelopmentEncryptionCertificate()
+            .AddDevelopmentSigningCertificate();
+        options.UseAspNetCore()
+            .EnableStatusCodePagesIntegration()
+            .EnableRedirectionEndpointPassthrough();
+        options.UseSystemNetHttp()
+            .SetProductInformation(Assembly.GetExecutingAssembly());
+        options.UseWebProviders()
+            .AddGitHub(options =>
             {
-                options.AllowAuthorizationCodeFlow();
-                options.AddDevelopmentEncryptionCertificate()
-                       .AddDevelopmentSigningCertificate();
-                options.UseAspNetCore()
-                       .EnableStatusCodePagesIntegration()
-                       .EnableRedirectionEndpointPassthrough();
-                options.UseSystemNetHttp()
-                       .SetProductInformation(Assembly.GetExecutingAssembly());
-                options.UseWebProviders()
-                       .AddGitHub(options =>
-                       {
-                           options.SetClientId("c4ade52327b01ddacff3")
-                                  .SetClientSecret("da6bed851b75e317bf6b2cb67013679d9467c122")
-                                  .SetRedirectUri("callback/login/github");
-                       });
-            })
+                options.SetClientId("c4ade52327b01ddacff3")
+                    .SetClientSecret("da6bed851b75e317bf6b2cb67013679d9467c122")
+                    .SetRedirectUri("callback/login/github");
+            });
+    })
     .AddServer(options =>
     {
         options.SetAuthorizationEndpointUris("connect/authorize")
@@ -89,12 +93,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapOpenApi();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/openapi/v1.json", "v1");
-});
+app.UseSwaggerUI(options => { options.SwaggerEndpoint("/openapi/v1.json", "v1"); });
 
 app.MapRazorPages();
 app.MapGet("/api/identity/applications", async (IMediator m) => await m.Send(new GetAllApplicationsRequest()));
-app.MapGet("/api/identity/applications/{id}", async (IMediator m, String id) => await m.Send(new GetApplicationDetailsRequest(){Id = id}));
+app.MapPost("/api/identity/applications", async (IMediator m,Identity.Server.Application.Applications.AddApplication.ApplicationDto dto) => await m.Send(new AddApplicationRequest(){DisplayName = dto.DisplayName}));
+
+app.MapGet("/api/identity/applications/{id}",
+    async (IMediator m, String id) => await m.Send(new GetApplicationDetailsRequest() { Id = id }));
 app.Run();

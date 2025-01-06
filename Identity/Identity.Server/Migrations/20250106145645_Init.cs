@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Identity.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,7 +54,8 @@ namespace Identity.Server.Migrations
                 name: "OpenIddictApplications",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     ApplicationType = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     ClientId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     ClientSecret = table.Column<string>(type: "TEXT", nullable: true),
@@ -80,7 +81,8 @@ namespace Identity.Server.Migrations
                 name: "OpenIddictScopes",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     ConcurrencyToken = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Descriptions = table.Column<string>(type: "TEXT", nullable: true),
@@ -205,8 +207,9 @@ namespace Identity.Server.Migrations
                 name: "OpenIddictAuthorizations",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    ApplicationId = table.Column<string>(type: "TEXT", nullable: true),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ApplicationId = table.Column<long>(type: "INTEGER", nullable: true),
                     ConcurrencyToken = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     CreationDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Properties = table.Column<string>(type: "TEXT", nullable: true),
@@ -229,9 +232,10 @@ namespace Identity.Server.Migrations
                 name: "OpenIddictTokens",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    ApplicationId = table.Column<string>(type: "TEXT", nullable: true),
-                    AuthorizationId = table.Column<string>(type: "TEXT", nullable: true),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ApplicationId = table.Column<long>(type: "INTEGER", nullable: true),
+                    AuthorizationId = table.Column<long>(type: "INTEGER", nullable: true),
                     ConcurrencyToken = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     CreationDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     ExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: true),
