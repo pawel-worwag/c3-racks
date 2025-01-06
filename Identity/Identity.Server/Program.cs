@@ -1,4 +1,6 @@
 using System.Reflection;
+using Identity.Server.Application.Applications.GetAll;
+using Identity.Server.Application.Applications.GetDetails;
 using Identity.Server.Domain;
 using Identity.Server.Infrastructure.Database;
 using MediatR;
@@ -93,4 +95,6 @@ app.UseSwaggerUI(options =>
 });
 
 app.MapRazorPages();
+app.MapGet("/api/identity/applications", async (IMediator m) => await m.Send(new GetAllApplicationsRequest()));
+app.MapGet("/api/identity/applications/{id}", async (IMediator m, String id) => await m.Send(new GetApplicationDetailsRequest(){Id = id}));
 app.Run();

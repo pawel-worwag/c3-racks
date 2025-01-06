@@ -28,7 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\" />
       <Folder Include="Components\" />
       <Folder Include="wwwroot\libs\bootstrap-icons-1.11.3\" />
     </ItemGroup>
